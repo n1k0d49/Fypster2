@@ -1,1 +1,46 @@
 /* CSS declarations go here */
+
+
+.navbar {
+  height: 30px;
+  padding: 3px;
+}
+
+#search {
+  position: relative;
+  top: -9px;
+}
+
+#search input {
+  height: 30px;
+}
+
+.navbar .navbar-nav {
+    display: inline-block;
+    float: none;
+}
+
+.navbar .navbar-collapse {
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    .navbar .navbar-nav {
+        display: inline-block;
+        float: none;
+        vertical-align: top;
+    }
+
+    .navbar .navbar-collapse {
+        text-align: center;
+    }
+}
+
+/*@media (max-width: 800px) {
+  #bs-example-navbar-collapse-1 {
+    background: white;
+  }
+  #sections {
+    padding-left: 15%;
+  }
+}*/
