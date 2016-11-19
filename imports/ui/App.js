@@ -57,6 +57,11 @@ class App extends Component {
   }
 }
 
+App.propTypes = {
+  currentUser: PropTypes.object,
+  people: PropTypes.array.isRequired,
+};
+
 class Person extends Component {
   render() {
     return (
@@ -67,13 +72,9 @@ class Person extends Component {
   }
 }
 
-App.propTypes = {
-  currentUser: PropTypes.object,
-  people: PropTypes.array.isRequired,
-};
-
 export default createContainer(() => {
+  console.log(People.find({}).fetch());
   return {
-    people: People.find({}).fetch(),
+    people: People.find({}).fetch()
   };
 }, App);
