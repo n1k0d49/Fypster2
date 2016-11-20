@@ -81,11 +81,15 @@ class App extends Component {
 
 App.propTypes = {
   currentUser: PropTypes.object,
+  posts: PropTypes.array.isRequired,
   people: PropTypes.array.isRequired,
+  events: PropTypes.array.isRequired,
+  tools: PropTypes.array.isRequired,
 };
 
 class List extends Component {
   renderList() {
+    let thiscomp = this;
     if (thiscomp.props.section=== "content"){
       return this.props.results.map((result) =>(
       <Post key={result._id} post={result}/>))
@@ -100,7 +104,6 @@ class List extends Component {
     }
   }
   render() {
-    let thiscomp = this;
     return (
       <div>
         {this.renderList()}
@@ -122,15 +125,15 @@ class Person extends Component {
   }
 }
 
+
 export default createContainer(() => {
   People.insert({"name": "I am a pepe", "location": "Not here", "interests": ["Trains", "Turtles"], "skills": ["Javascript", "Html"]});
   People.insert({"name": "Person Peterson", "location": "Thereburg", "interests": ["IA", "AI"], "skills": ["Making clay forge blower", "Computatoinal learning theory"]});
-
   // console.log(People.find({}).fetch());
   return {
     posts: Posts.find({}).fetch(),
     people: People.find({}).fetch(),
     events: Events.find({}).fetch(),
-    tools: Tools.find({}).fetch(),
+    tools: Tools.find({}).fetch()
   };
 }, App);
