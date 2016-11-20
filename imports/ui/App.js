@@ -105,6 +105,26 @@ class List extends Component {
       <div>
         {this.renderList()}
       </div>
+    );
+  }
+}
+
+class Post extends Component {
+  render() {
+    return (
+      <div>
+      {this.props.post.title}
+      </div>
+    )
+  }
+}
+
+class Event extends Component {
+  render() {
+    return (
+      <div>
+      {this.props.post.title}
+      </div>
     )
   }
 }
