@@ -86,6 +86,7 @@ App.propTypes = {
 
 class List extends Component {
   renderList() {
+    let thiscomp = this;
     if (thiscomp.props.section=== "content"){
       return this.props.results.map((result) =>(
       <Post key={result._id} post={result}/>))
@@ -100,7 +101,6 @@ class List extends Component {
     }
   }
   render() {
-    let thiscomp = this;
     return (
       <div>
         {this.renderList()}
