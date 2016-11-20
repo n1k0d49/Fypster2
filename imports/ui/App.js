@@ -5,13 +5,24 @@ import { createContainer } from 'meteor/react-meteor-data';
 
 import AccountsUIWrapper from './AccountsUIWrapper.js';
 
-import { People } from '../api/collections.js';
+import { People, Posts, Events, Tools } from '../api/collections.js';
 
 // App component - represents the whole app
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {section: "content"};
+  }
+  makeList() {
+    if (this.state.section === "contents") {
+      return <List section={this.state.section} results={this.props.posts}/>
+    } else if (this.state.section === "people") {
+      return <List section={this.state.section} results={this.props.people}/>
+    } else if (this.state.section === "events") {
+      return <List section={this.state.section} results={this.props.events}/>
+    } else if (this.state.section === "tools") {
+      return <List section={this.state.section} results={this.props.tools}/>
+    }
   }
   render() {
     let thisApp = this;
@@ -57,15 +68,7 @@ class App extends Component {
       </form>
       </div>
   <div>
-    { if (this.state.section === "contents") {
-      <List section={this.state.section} results={}/>
-    } else (this.state.section === "people") {
-      <List section={this.state.section} results={}/>
-    } else (this.state.section === "events") {
-      <List section={this.state.section} results={}/>
-    } else (this.state.section === "tools") {
-      <List section={this.state.section} results={}/>
-    }}
+    {this.makeList()}
   </div>
 </div>
     );
@@ -82,23 +85,25 @@ App.propTypes = {
 };
 
 class List extends Component {
+  renderList() {
+    if (thiscomp.props.section=== "content"){
+      return this.props.results.map((result) =>(
+      <Post key={result._id} post={result}/>))
+    }
+    else if (thiscomp.props.section=== "people"){
+      return this.props.results.map((result) =>(
+      <Person key={result._id} person={result}/>))
+    }
+    else if (thiscomp.props.section=== "events"){
+      return this.props.results.map((result) =>(
+      <Event key={result._id} event={result}/>))
+    }
+  }
   render() {
-    let thiscomp = this
+    let thiscomp = this;
     return (
       <div>
-        {
-          if (thiscomp.props.section=== "content"){
-            this.props.results.map((result) =>(
-            <Post key={result._id} post={result}/>))
-          }
-          else if (thiscomp.props.section=== "people"){
-            this.props.results.map((result) =>(
-            <Person key={result._id} person={result}/>))
-          }
-          else if (thiscomp.props.section=== "events"){
-            this.props.results.map((result) =>(
-              <Event key={result._id} event={result}/>))
-        }
+        {this.renderList()}
       </div>
     )
   }
@@ -118,15 +123,14 @@ class Person extends Component {
 }
 
 export default createContainer(() => {
-  People.insert({"name": "I am a person", "location": "Not here", "interests": ["Trains", "Turtles"], "skills": ["Javascript", "Html"]});
+  People.insert({"name": "I am a pepe", "location": "Not here", "interests": ["Trains", "Turtles"], "skills": ["Javascript", "Html"]});
   People.insert({"name": "Person Peterson", "location": "Thereburg", "interests": ["IA", "AI"], "skills": ["Making clay forge blower", "Computatoinal learning theory"]});
 
   // console.log(People.find({}).fetch());
   return {
-    content: Posts.find({}).fetch(),
+    posts: Posts.find({}).fetch(),
     people: People.find({}).fetch(),
     events: Events.find({}).fetch(),
-    tools: Tool.find({}).fetch(),
-
+    tools: Tools.find({}).fetch(),
   };
 }, App);
