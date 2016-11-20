@@ -62,6 +62,29 @@ App.propTypes = {
   people: PropTypes.array.isRequired,
 };
 
+class List extends Component {
+  render() {
+    let thiscomp = this
+    return (
+      <div>
+        {
+          if (thiscomp.props.section=== "content"){
+            this.props.results.map((result) =>(
+            <Post key={result._id} post={result}/>))
+          }
+          else if (thiscomp.props.section=== "people"){
+            this.props.results.map((result) =>(
+            <Person key={result._id} person={result}/>))
+          }
+          else if (thiscomp.props.section=== "events"){ 
+            this.props.results.map((result) =>(
+              <Event key={result._id} event={result}/>))
+        }
+      <div/>
+    )
+  }
+}
+
 class Person extends Component {
   render() {
     return (
