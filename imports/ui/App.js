@@ -76,11 +76,11 @@ class List extends Component {
             this.props.results.map((result) =>(
             <Person key={result._id} person={result}/>))
           }
-          else if (thiscomp.props.section=== "events"){ 
+          else if (thiscomp.props.section=== "events"){
             this.props.results.map((result) =>(
               <Event key={result._id} event={result}/>))
         }
-      <div/>
+      </div>
     )
   }
 }
