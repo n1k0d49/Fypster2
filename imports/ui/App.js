@@ -1,3 +1,4 @@
+// Guillermo Valle Perez (c) 2016 (contrib. Nikolai Drouzine)
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { Meteor } from 'meteor/meteor';
@@ -151,7 +152,9 @@ class Post extends Component {
   render() {
     return (
       <div className="list-element">
-        {this.props.post.text}
+        <p>{this.props.post.username} posted:</p>
+        <p>{this.props.post.text}</p>
+        <p>at this time {this.props.post.createdAt.parse}</p>
       </div>
     )
   }
@@ -191,4 +194,4 @@ export default createContainer(() => {
     currentUser: Meteor.user()
   };
 }, App);
-//(c) Guillermo Valle Perez 2016 (contrib. Nikolai Drouzine)
+// Guillermo Valle Perez (c) 2016 (contrib. Nikolai Drouzine)
