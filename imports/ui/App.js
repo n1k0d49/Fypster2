@@ -12,12 +12,16 @@ import { People, Posts, Events, Tools } from '../api/collections.js';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {section: "people"};
+    this.state = {section: "people", posts: this.props.posts};
+  }
+  componentDidUpdate(prevProps, prevState){
+    if (this.props !== prevProps)
+      this.setState({posts: this.props.posts})
   }
   makeList() {
     console.log("makeList", this.state.section);
     if (this.state.section === "content") {
-      return <List section={this.state.section} results={this.props.posts}/>
+      return <List section={this.state.section} results={this.state.posts}/>
     } else if (this.state.section === "people") {
       return <List section={this.state.section} results={this.props.people}/>
     } else if (this.state.section === "events") {
@@ -25,6 +29,11 @@ class App extends Component {
     } else if (this.state.section === "tools") {
       return <List section={this.state.section} results={this.props.tools}/>
     }
+  }
+  handleSearch(){
+    let querystring= ReactDOM.findDOMNode(this.refs.search_input).value;
+    this.setState({ posts: this.props.posts.filter(x=> x.text.includes(querystring))
+    })
   }
   render() {
     let thisApp = this;
@@ -63,9 +72,9 @@ class App extends Component {
     </div>
 </nav>
       <div className="container">
-      <form id="search-form" className="navbar-form navbar-left">
+      <form id="search-form" className="navbar-form navbar-left" onSubmit={this.handleSearch.bind(this)}>
         <div id="search" className="form-group">
-          <input type="text" className="form-control" placeholder="Search"/>
+          <input type="text" className="form-control" ref= "search_input" placeholder="Search" onChange={this.handleSearch.bind(this)}/>
         </div>
       </form>
       </div>
@@ -82,7 +91,12 @@ class App extends Component {
 
 class NewPost extends Component {
   handleSubmit() {
-    Posts._collection.insert({"text": ReactDOM.findDOMNode(this.refs.post).value})
+    Posts._collection.insert({"text": ReactDOM.findDOMNode(this.refs.post).value,
+                              "createdAt": new Date(),
+                              "owner": Meteor.userId(),
+                              "username": Meteor.user().username
+                            })
+    ReactDOM.findDOMNode(this.refs.post).value="";
   }
   render() {
     return (
@@ -173,6 +187,8 @@ export default createContainer(() => {
     posts: Posts.find({}).fetch(),
     people: People.find({}).fetch(),
     events: Events.find({}).fetch(),
-    tools: Tools.find({}).fetch()
+    tools: Tools.find({}).fetch(),
+    currentUser: Meteor.user()
   };
 }, App);
+//(c) Guillermo Valle Perez 2016 (contrib. Nikolai Drouzine)
