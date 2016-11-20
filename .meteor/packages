@@ -25,3 +25,8 @@ accounts-password
 react-meteor-data
 bootstrap
 twbs:bootstrap
+accounts-facebook
+accounts-google
+accounts-github
+accounts-twitter
+accounts-meetup
