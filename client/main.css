@@ -23,6 +23,11 @@
   margin-left: -200px;
 }
 
+.person-box {
+  border-width: 1px;
+  border-style: solid;
+}
+
 .navbar .navbar-nav {
     display: inline-block;
     float: none;
