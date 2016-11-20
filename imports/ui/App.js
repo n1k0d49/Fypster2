@@ -6,15 +6,17 @@ import { createContainer } from 'meteor/react-meteor-data';
 import AccountsUIWrapper from './AccountsUIWrapper.js';
 
 import { People, Posts, Events, Tools } from '../api/collections.js';
+// import { People} from '../api/collections.js';
 
 // App component - represents the whole app
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {section: "content"};
+    this.state = {section: "people"};
   }
   makeList() {
-    if (this.state.section === "contents") {
+    console.log("makeList", this.state.section);
+    if (this.state.section === "content") {
       return <List section={this.state.section} results={this.props.posts}/>
     } else if (this.state.section === "people") {
       return <List section={this.state.section} results={this.props.people}/>
@@ -47,7 +49,7 @@ class App extends Component {
         thisApp.setState({section: "people"});
       }}>People</a></li>
       <li><a onClick={() => {
-        thisApp.setState({section: "event"});
+        thisApp.setState({section: "events"});
       }}>Event</a></li>
       <li><a onClick={() => {
         thisApp.setState({section: "tools"});
@@ -67,11 +69,29 @@ class App extends Component {
         </div>
       </form>
       </div>
-  <div>
+    <div className="container">
+      {this.state.section === "content" ? <NewPost/> : null}
+    </div>
+  <div className="container">
     {this.makeList()}
   </div>
 </div>
     );
+  }
+}
+
+class NewPost extends Component {
+  handleSubmit() {
+    Posts._collection.insert({"text": ReactDOM.findDOMNode(this.refs.post).value})
+  }
+  render() {
+    return (
+      <form id="post-form" className="navbar-form navbar-left" onSubmit={this.handleSubmit.bind(this)}>
+        <div id="post" className="form-group">
+          <input type="text" ref="post" className="form-control" placeholder="New post"/>
+        </div>
+      </form>
+    )
   }
 }
 
@@ -84,11 +104,12 @@ App.propTypes = {
   posts: PropTypes.array.isRequired,
   people: PropTypes.array.isRequired,
   events: PropTypes.array.isRequired,
-  tools: PropTypes.array.isRequired,
+  tools: PropTypes.array.isRequired
 };
 
 class List extends Component {
   renderList() {
+    console.log(this.props.results);
     let thiscomp = this;
     if (thiscomp.props.section=== "content"){
       return this.props.results.map((result) =>(
@@ -115,8 +136,8 @@ class List extends Component {
 class Post extends Component {
   render() {
     return (
-      <div>
-      {this.props.post.title}
+      <div className="list-element">
+        {this.props.post.text}
       </div>
     )
   }
@@ -125,8 +146,8 @@ class Post extends Component {
 class Event extends Component {
   render() {
     return (
-      <div>
-      {this.props.post.title}
+      <div className="list-element">
+      {this.props.event.title}
       </div>
     )
   }
@@ -135,11 +156,11 @@ class Event extends Component {
 class Person extends Component {
   render() {
     return (
-      <div className="person-box">
-        <p>Name: {this.props.person.name}</p>
-        <p>Location: {this.props.person.location}</p>
-        <p>Interests: {this.props.person.interests.map(interest=>(<span>{interest}, </span>))}</p>
-        <p>Sills: {this.props.person.skills.map(skill=>(<span>{skill}, </span>))}</p>
+      <div className="list-element">
+        <p><b>Name</b>: {this.props.person.name}</p>
+        <p><b>Location</b>: {this.props.person.location}</p>
+        <p><b>Interests</b>: {this.props.person.interests.map((interest,i)=>(<span key={i} >{interest}, </span>))}</p>
+        <p><b>Skills</b>: {this.props.person.skills.map((skill,i)=>(<span key={i} >{skill}, </span>))}</p>
       </div>
     )
   }
@@ -147,8 +168,6 @@ class Person extends Component {
 
 
 export default createContainer(() => {
-  People.insert({"name": "I am a pepe", "location": "Not here", "interests": ["Trains", "Turtles"], "skills": ["Javascript", "Html"]});
-  People.insert({"name": "Person Peterson", "location": "Thereburg", "interests": ["IA", "AI"], "skills": ["Making clay forge blower", "Computatoinal learning theory"]});
   // console.log(People.find({}).fetch());
   return {
     posts: Posts.find({}).fetch(),

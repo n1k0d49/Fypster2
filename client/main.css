@@ -15,6 +15,15 @@
   margin: 0 20vw;
 }
 
+#post input{
+  width: 40vw;
+  height: 50px;
+}
+
+#post-form {
+  margin: 5px 20vw;
+}
+
 #sign-up {
   margin-top: -30px;
 }
@@ -23,9 +32,11 @@
   margin-left: -200px;
 }
 
-.person-box {
+.list-element {
   border-width: 1px;
   border-style: solid;
+  margin: 10px;
+  padding: 10px;
 }
 
 .navbar .navbar-nav {
