@@ -92,10 +92,11 @@ class App extends Component {
 
 class NewPost extends Component {
   handleSubmit() {
+    console.log(Meteor.user());
     Posts._collection.insert({"text": ReactDOM.findDOMNode(this.refs.post).value,
                               "createdAt": new Date(),
                               "owner": Meteor.userId(),
-                              "username": Meteor.user().username
+                              "username": Meteor.user().profile.name
                             })
     ReactDOM.findDOMNode(this.refs.post).value="";
   }
@@ -150,11 +151,12 @@ class List extends Component {
 
 class Post extends Component {
   render() {
+    console.log("this.props.post",this.props.post);
     return (
       <div className="list-element">
-        <p>{this.props.post.username} posted:</p>
+        <p><b>{this.props.post.username}</b> posted:</p>
         <p>{this.props.post.text}</p>
-        <p>at this time {this.props.post.createdAt.parse}</p>
+        <p>at <b>{this.props.post.createdAt.toLocaleTimeString()}</b>, {this.props.post.createdAt.toDateString()}</p>
       </div>
     )
   }
